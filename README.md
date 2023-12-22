@@ -8,7 +8,7 @@ $ curl -X POST http://localhost:3000/simulate \
     --data '{"url": "http://prod-env/petstore/1", "method": "get", "response": {"id": 1, "name": "odin"}}'
 ```
 
-And then, after this first call, when your application call this URL, the **Sim**ulator will catch this request and do the response as request on the first call, like:
+After this first call, when your application call the URL `GET http://prod-env/petstore/1`, the **Sim**ulator will catch this request and do the response as requested on the first call:
 
 ```json
 {
