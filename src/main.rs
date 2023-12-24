@@ -14,7 +14,7 @@ mod embedded {
 #[tokio::main]
 async fn main() {
     let conn = "host=localhost user=sim password=sim dbname=sim";
-    let (client, connection) = tokio_postgres::connect(conn, NoTls)
+    let (mut client, connection) = tokio_postgres::connect(conn, NoTls)
         .await
         .expect("cannot connect into database");
 
@@ -31,6 +31,12 @@ async fn main() {
         .query("SELECT 1", &[])
         .await
         .expect("error occurred trying to run `select 1` on postgres");
+
+    // Run the migrations
+    embedded::migrations::runner()
+        .run_async(&mut client)
+        .await
+        .expect("error trying to run the migrations");
 
     let app = Router::new()
         .route("/", get(|| async { "Hello, World!" }))
